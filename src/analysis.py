@@ -24,43 +24,45 @@ def question2():
     answerNoise = 0          # Tirando o fator de "exploration", o agente sempre escolhe a ação com maior valor Q e segue para o estado terminal
     return answerDiscount, answerNoise
 
+# Exemplo de comando utilizado no terminal apra rodar a questão 3: 
+# python gridworld.py -a value -i 100 -g DiscountGrid --speed 0.5 --discount 0.9 --noise 0.2 --livingReward -5
 def question3a():
     # get the close reward, risking the cliff
-    answerDiscount = 1
-    answerNoise = 0
-    answerLivingReward = -4.5
+    answerDiscount = 1          # Dando um grande desconto em cada step, o agente tenta chegar o antes possível no estado terminal
+    answerNoise = 0             # Tirando o fator de "exploration", o agente sempre escolhe a ação com maior valor Q e segue para o estado terminal
+    answerLivingReward = -4.5   # Colocando um valor baixo de recompensa, o agente não tenta chegar na recomepnsa de maior valor, mas sim no estado terminal
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3b():
     # get the close reward, avoiding the cliff
-    answerDiscount = 0.2
-    answerNoise = 0.2
-    answerLivingReward = -1
+    answerDiscount = 0.2        # Dando um baixo desconto em cada step, o agente nãos e importa de caminhar mais para chegar no estado terminal
+    answerNoise = 0.2           # Colocando o fator de "exploration" o agente descobre que é interessante evitar o precipício
+    answerLivingReward = -1     # Colocando um valor baixo de recompensa, o agente não tenta chegar na recomepnsa de maior valor, mas sim no estado terminal
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3c():
     # Prefer the distant exit (+10), risking the cliff (-10)
-    answerDiscount = 0.2
-    answerNoise = 0
-    answerLivingReward = 1
+    answerDiscount = 0.2        # Dando um baixo desconto em cada step, o agente nãos e importa de caminhar mais para chegar no estado terminal 
+    answerNoise = 0             # Tirando o fator de "exploration", o agente sempre escolhe a ação com maior valor Q e segue para o estado terminal
+    answerLivingReward = 1      # Colocando um valor alto de recompensa, o agente tenta chegar na recompensa de maior valor
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3d():
     # Prefer the distant exit (+10), avoiding the cliff (-10)
-    answerDiscount = 0.2
-    answerNoise = 0.2
-    answerLivingReward = 1
+    answerDiscount = 0.2        # Dando um baixo desconto em cada step, o agente nãos e importa de caminhar mais para chegar no estado terminal 
+    answerNoise = 0.2           # Colocando o fator de "exploration" o agente descobre que é interessante evitar o precipício
+    answerLivingReward = 1      # Colocando um valor positivo de recompensa, o agente tenta chegar na recompensa de maior valor
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
 def question3e():
     # Avoid both exits and the cliff (so an episode should never terminate)
-    answerDiscount = 0.2
-    answerNoise = 0.2
-    answerLivingReward = 10
+    answerDiscount = 0.2        # Dando um baixo desconto em cada step, o agente nãos e importa de caminhar mais para chegar no estado terminal 
+    answerNoise = 0.2           # Colocando o fator de "exploration" o agente descobre que é interessante evitar o precipício
+    answerLivingReward = 10     # Colocando um valor alto de recompensa por estar vivo, o agente fica preso apenas andando
     return answerDiscount, answerNoise, answerLivingReward
     # If not possible, return 'NOT POSSIBLE'
 
