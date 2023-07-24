@@ -21,7 +21,7 @@
 
 def question2():
     answerDiscount = 0.9
-    answerNoise = 0.2
+    answerNoise = 0          # Tirando o fator de "exploration", o agente sempre escolhe a ação com maior valor Q e segue para o estado terminal
     return answerDiscount, answerNoise
 
 def question3a():
