@@ -43,8 +43,29 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.values = util.Counter()  # A Counter is a dict with default 0
 
         # Write value iteration code here
-        "*** YOUR CODE HERE ***"
+        for _ in range(self.iterations):
+            stateToQValues = util.Counter()                                     # Dicionário (estado, valor Q)            
+            allStates = mdp.getStates()                                         # Pega todos os estados possíveis
 
+            for state in allStates:
+                isTerminalState = mdp.isTerminal(state)
+                possibleActions = self.mdp.getPossibleActions(state)
+
+                if(isTerminalState or len(possibleActions) == 0):               # Se for estado terminal ou não há ações possíveis, pula para o próximo estado
+                    continue
+                else:                                                           # Senão, atualiza o valor Q de cada ação possível
+                    possibleActions = mdp.getPossibleActions(state)
+                    actionToQValueDictionary = util.Counter()                   # Dicionário (ação, valor Q)
+
+                    for possibleAction in possibleActions:                      # Itera sobre as possíveis ações, calculando o valor Q de cada uma
+                        qValue = self.getQValue(state, possibleAction)
+                        actionToQValueDictionary[possibleAction] = qValue       # Adiciona os valores de Q(s,a) no dicionário
+
+                    bestAction = actionToQValueDictionary.argMax()              # Pega a melhor ação
+                    bestActionQValue = actionToQValueDictionary[bestAction]
+                    stateToQValues[state] = bestActionQValue
+
+            self.values = stateToQValues                                        # Atualiza os valores de V(s) com os valores de Q(s,a) calculados
 
     def getValue(self, state):
         """
@@ -57,8 +78,16 @@ class ValueIterationAgent(ValueEstimationAgent):
           Compute the Q-value of action in state from the
           value function stored in self.values.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        nextStatesAndProbabilities = self.mdp.getTransitionStatesAndProbs(state, action)            # Lista de tuplas (próximo estado, probabilidade)
+        accumulatedQValue = 0
+
+        for nextStateAndProbability in nextStatesAndProbabilities:                                  # Itera sobre as tuplas (próximo estado, probabilidade)
+            nextState = nextStateAndProbability[0]
+            probability = nextStateAndProbability[1]
+            reward = self.mdp.getReward(state, action, nextState)
+            accumulatedQValue += probability * (reward + self.discount * self.values[nextState])    # Qk+1(s,a) = R(s,a) + gama * somatório[P(s'|s,a) * Vk(s')]
+
+        return accumulatedQValue
 
     def computeActionFromValues(self, state):
         """
@@ -69,8 +98,20 @@ class ValueIterationAgent(ValueEstimationAgent):
           there are no legal actions, which is the case at the
           terminal state, you should return None.
         """
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        possibleActions = self.mdp.getPossibleActions(state)
+
+        if self.mdp.isTerminal(state) or len(possibleActions) == 0:             # Se estiver no estado terminal ou não há ações possíveis, retorna None
+            return None
+        else:                                                                   # Senão calcula a melhor ação possível de um dado estado
+            actionToQValueDictionary = util.Counter()                           # Dicionário (ação, valor Q)
+            for possibleAction in possibleActions:                              # Itera sobre as possíveis ações, calculando o valor Q de cada uma
+                action = possibleAction
+                qValue = self.getQValue(state, action)
+                actionToQValueDictionary[action] = qValue
+            
+            bestAction = actionToQValueDictionary.argMax()                      # Pega a melhor ação
+
+            return bestAction
 
     def getPolicy(self, state):
         return self.computeActionFromValues(state)
