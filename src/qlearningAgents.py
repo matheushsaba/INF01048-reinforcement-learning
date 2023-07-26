@@ -102,8 +102,14 @@ class QLearningAgent(ReinforcementAgent):
         # Pick Action
         legalActions = self.getLegalActions(state)
         action = None
-        "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+
+        if len(legalActions) != 0:                                      # Se houverem ações possíveis
+            shouldChooseActionRandomly = util.flipCoin(self.epsilon)    # Se um valor aleatório sorteado for menor que epsilon, escolhe uma ação aleatória
+
+            if shouldChooseActionRandomly:
+                action = random.choice(legalActions)                    # Escolhe aleatoriamente uma ação dentre as possíveis
+            else:
+                action = self.computeActionFromQValues(state)           # Segue a ação com melhor valor Q
 
         return action
 
